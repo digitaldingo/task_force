@@ -1,7 +1,8 @@
+# -*- coding: utf-8 -*-
+
 import numpy as np
 import pandas as pd
 
-#from scipy.ndimage import imread
 from skimage import io
 
 from sklearn.preprocessing import PolynomialFeatures
@@ -50,8 +51,6 @@ def ukendte_data(antal_data=17, seed=30):
 
 def plot_data(x, y, titel=""):
 
-    #fig, ax = plt.subplots()
-
     fig = plt.figure(42)
     ax = fig.add_subplot(111)
 
@@ -65,10 +64,6 @@ def plot_data(x, y, titel=""):
 
     ax.set_xlabel(r"$x$")
     ax.set_ylabel(r"$y$")
-
-    #plt.show()
-
-    #return plt.gcf(), plt.gca()
 
 
 def polynomium(x, model):
@@ -287,51 +282,6 @@ class Billede:
         dx,dy,dz = self.dims
         return pixels.reshape(dx,dy,dz)
 
-
-def plot_farver2(billede, centre=None):
-
-    pixels = billede.billede_til_pixels
-
-    colours = ["r", "g", "b"]
-    cnames = ["Rød", "Grøn", "Blå"]
-
-    cmap = plt.cm.Blues
-
-    fig, ax = plt.subplots(1,3, figsize=(12,6))
-
-    extent = [0, 255, 0, 255]
-
-    for i in range(2):
-        for j in range(i+1,3):
-
-            c1 = colours[i]
-            c2 = colours[j]
-
-            c = i + j - 1
-
-
-            H, xedges, yedges = np.histogram2d(pixels[c2], pixels[c1], 256,
-                                               range=[[extent[0], extent[1]],
-                                                      [extent[2], extent[3]]])
-
-            H[np.where(H < 1)] = 0.1
-
-            cax = ax[c].imshow(H, extent=extent, aspect='equal', origin='lower',
-                               cmap = cmap,
-                               norm=LogNorm(vmin=1, vmax=np.nanmax(H)), zorder=10)
-
-            ax[c].set_xlabel(cnames[i])
-            ax[c].set_ylabel(cnames[j])
-
-            if centre is not None:
-                ax[c].scatter(centre[:,i], centre[:,j], marker='x', s=50,
-                              linewidths=3, color=plt.cm.Reds(.9), zorder=20)
-
-
-            ax[c].set_ylim(0,255)
-            ax[c].set_xlim(0,255)
-
-    fig.tight_layout()
 
 
 def plot_farver(billede, centre=None):
